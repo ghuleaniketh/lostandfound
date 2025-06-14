@@ -1,0 +1,79 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    background-color: var(--background);
+}
+
+.form {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.form h1 {
+    margin-bottom: 24px;
+    color: var(--foreground);
+    text-align: center;
+}
+
+.form input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--foreground);
+}
+
+.form input:focus {
+    outline: none;
+    border-color: #ff9898;
+}
+
+.form button {
+    width: 100%;
+    padding: 12px;
+    background: #ff9898;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: transform 0.2s;
+    margin-top: 5px;
+}
+.form button:hover{
+    background-color: #6febc2;
+}
+.checkboxinput{
+    display: flex;
+    height: 20px;
+    width: 100%;
+    margin-bottom: 5px ;
+    font-size: 15px;
+
+}
+.checkboxinput input{
+    height: 14px;
+    width: 14px;
+}
+.lablewala{
+    margin-left: 5px;
+}
+.anker{
+    font-size: 15px;
+}
+.error {
+    color: #ff6b6b;
+    margin-bottom: 16px;
+    text-align: center;
+}
+

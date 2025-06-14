@@ -1,0 +1,68 @@
+.navContainer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: var(--background);
+    position: relative;
+}
+
+.nav {
+    display: flex;
+    gap: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 4px;
+    border-radius: 100px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.navButton {
+    padding: 8px 24px;
+    border-radius: 100px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+}
+
+.active {
+    background-color: #ff9898;
+    color: black;
+    transform: scale(1.05);
+}
+
+.navButton:not(.active):hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.navButton:active {
+    transform: scale(0.95);
+}
+
+.sidebarIcon{
+    height: 50px;
+    width: 50px;
+}
+
+.menuButton {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: none;
+    border: none;
+    color: var(--foreground);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 8px;
+    transition: transform 0.2s;
+    z-index: 100;
+}
+
+.menuButton:hover {
+    transform: scale(1.1);
+}

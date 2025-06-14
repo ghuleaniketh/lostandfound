@@ -1,0 +1,104 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    background-color: var(--background);
+}
+
+.form {
+    
+    max-width: 600px;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+.form h1 {
+    margin-bottom: 24px;
+    color: var(--foreground);
+    text-align: center;
+}
+
+.form input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--foreground);
+    transition: 0.4s ;
+}
+.password{
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+.gender{
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    color: var(--foreground);
+}
+.gender:focus{
+    outline: none;
+    border-color: #6febc2  ;
+    color: #6febc2;
+}
+.form input:focus {
+    outline: none;
+    border-color: #6febc2  ;
+    color: #6febc2;
+    width:110%;
+}
+
+.form button {
+    width: 100%;
+    padding: 12px;
+    background: #ff9898;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: transform 0.2s;
+    margin-bottom: 10px;
+}
+
+
+.form button:hover{
+    background-color: #6febc2;
+}
+.anker{
+    font-size:15px ;
+    margin:5px
+   
+
+}
+.checkboxinput{
+    display: flex;
+    height: 20px;
+    width: 100%;
+    margin-bottom: 5px ;
+    font-size: 15px;
+
+}
+.checkboxinput input{
+    height: 14px;
+    width: 14px;
+}
+.checkboxinput label{
+    margin-left: 5px;
+    font-size: 13px;
+}
+
+.nameinput{
+    display: flex;
+    gap: 15px;
+}
