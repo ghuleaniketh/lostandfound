@@ -1,4 +1,5 @@
 import mysql from 'mysql2/promise'; 
+import { v4 as uuidv4 } from 'uuid';
 
 const db =  mysql.createPool({
     host: 'localhost',
@@ -10,17 +11,16 @@ const db =  mysql.createPool({
 export async function POST(req){
     try{
         const data = await req.json();
-    const {id,username,email,phone,gender,pass} = data ;
+    const {username,email,pass} = data ;
+    let id = uuidv4();
     console.log(id);
     console.log(username);
     console.log(email);
-    console.log(phone);
-    console.log(gender)
     console.log(pass);
 
 
-    let q = 'INSERT INTO users (id,username,email,phone,gender,pass ) VALUES (?, ?, ?, ?, ?, ? , ? )';
-    await db.query( q,[id,username,email,phone,gender,pass]);
+    const q = 'INSERT INTO users (id, username, email, pass) VALUES (?, ?, ?, ?)';
+        await db.query(q, [id, username, email, pass]);
 
     return new Response(JSON.stringify({ message: 'User added successfully!' }), {
     status: 200,

@@ -24,7 +24,7 @@ export default function Login() {
             if (!res.ok) throw new Error('Invalid credentials');
             
             const data = await res.json();
-            window.location.href = '/dashboard';
+            router.push('/');
         } catch (err) {
             setError(err.message);
         }
