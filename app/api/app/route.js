@@ -12,11 +12,11 @@ export async function POST(req){
     try{
         const data = await req.json();
     const {username,email,pass} = data ;
-    let id = uuidv4();
-    console.log(id);
-    console.log(username);
-    console.log(email);
-    console.log(pass);
+        let id = uuidv4();
+        console.log(id);
+        console.log(username);
+        console.log(email);
+        console.log(pass);
 
 
     const q = 'INSERT INTO users (id, username, email, pass) VALUES (?, ?, ?, ?)';
