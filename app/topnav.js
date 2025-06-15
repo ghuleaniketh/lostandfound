@@ -1,7 +1,6 @@
 'use client';
 import styles from "./topnav.module.css";
 import { useState } from "react";
-import Link from 'next/link';
 import Lostitem from "@/app/lostitem"; 
 import FoundItem from "@/app/founditem";
 import Sidebar from "@/app/sidebar";

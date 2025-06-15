@@ -1,13 +1,10 @@
-
-import  TopNav  from "@/app/topnav";
-
-
+import  Register  from "./register/page";
 
 export default function UsersPage() {
   return (
     <>
-     <TopNav/>
-
+      
+      <Register />
     </>
   );
 }

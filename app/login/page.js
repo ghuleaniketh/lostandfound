@@ -43,7 +43,7 @@ export default function Login() {
 
 
         alert("Login ho gai bhai.............");
-        router.push('/');
+        router.push('/home');
     } else {
         alert("worng password!!!!!!!!!!");
     }
