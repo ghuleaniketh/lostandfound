@@ -1,8 +1,11 @@
 'use client';
-import { useState } from 'react';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 import styles from './login.module.css';
+import { useState } from 'react';
 
 export default function Login() {
+    const router = useRouter();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -21,12 +24,35 @@ export default function Login() {
                 body: JSON.stringify(formData),
             });
 
-            if (!res.ok) throw new Error('Invalid credentials');
-            
             const data = await res.json();
-            router.push('/');
-        } catch (err) {
-            setError(err.message);
+        
+            if (res.ok) {
+    if (data.pass === formData.password) {
+
+
+        Cookies.set('token', data.id, {
+        expires: 1, // 1 day
+        secure: true,
+        sameSite: 'strict',
+        });
+
+//         import Cookies from 'js-cookie';
+
+// const token = Cookies.get('token');
+// console.log("User token from cookie:", token);
+
+
+        alert("Login ho gai bhai.............");
+        router.push('/');
+    } else {
+        alert("worng password!!!!!!!!!!");
+    }
+} else {
+    alert("user not found!!!!!!!!!!!!!!!!!")
+}
+
+        } catch (error) {
+            alert("user not found");
         }
     };
 

@@ -7,14 +7,25 @@ const db =  mysql.createPool({
     database:'collage'
 });
 
-const q = 'SELECT * FROM users;';
-try {
-    const [rows] = await db.query(q);
-    console.log(rows);
-} catch (error) {
-    console.error('Database query error:', error);
-}
 
-const data = await req.json();
-    const {email,pass} = data ;
-    console.log(email);
+export async function POST(req) {
+        const q = 'SELECT * FROM users WHERE email = ? ;';
+    try {
+        const data = await req.json();
+        const {email,password} = data ;
+        console.log(email);
+        console.log(password);
+        
+        const [rows] = await db.query(q,[email]);
+
+            console.log(rows);
+            return new Response(JSON.stringify( rows[0]), {
+            status: 200,
+            });
+            
+    } catch (error) {
+        console.error('Database query error:', error);
+    }
+
+    
+}
