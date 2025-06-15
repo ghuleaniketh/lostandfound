@@ -16,6 +16,9 @@ export default function Sidebar({ isOpen, onClose }) {
                 <Link href="/listlost" className={styles.sidebarLink}>
                 List Lost Item
                 </Link>
+                <Link href="/dashboard" className={styles.sidebarLink}>
+                Dashboard
+                </Link>
                 <Link href="/login" className={styles.sidebarLink}>
                 Logout
                 </Link>
