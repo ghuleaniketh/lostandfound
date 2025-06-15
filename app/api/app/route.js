@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 const db =  mysql.createPool({
     host: 'localhost',
     user : 'root',
-    password:process.env.DB_PASSWORD,
+    password:'jaishreeram',
     database:'collage'
 });
 
