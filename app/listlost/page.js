@@ -2,10 +2,13 @@
 import { useState } from 'react';
 import styles from './lostform.module.css';
 import { v4 as uuidv4 } from 'uuid';
+import Sidebar from  '../sidebar';
 
 
 
 export default function LostForm() {
+    
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [formData, setFormData] = useState({
         id:uuidv4(),
         fullName: '',
@@ -61,115 +64,114 @@ export default function LostForm() {
     };
 
     return (
-        <div className={styles.formContainer}>
-            <h1>Lost Item Report</h1>
-            {error && <div className={styles.error}>{error}</div>}
-            <form method='post' action={"/api/lost_item"} onSubmit={handleSubmit} className={styles.form}>
-                <div className={styles.formGroup}>
-                    <label>Full Name </label>
-                    <input
-                        type="text"
-                        required
-                        value={formData.fullName}
-                        onChange={(e) => setFormData({...formData, fullName: e.target.value})}
-                    />
-                </div>
-
-                <div className={styles.formGroup}>
-                    <label>Contact Email / Phone </label>
-                    <input
-                        type="text"
-                        required
-                        value={formData.contact}
-                        onChange={(e) => setFormData({...formData, contact: e.target.value})}
-                    />
-                </div>
-
-                <div className={styles.formRow}>
+        <>
+            <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+            <button 
+                className={styles.menuButton}
+                onClick={() => setIsSidebarOpen(true)}
+            >
+                ☰
+            </button>
+            <div className={styles.formContainer}>
+                <h1>Lost Item Report</h1>
+                {error && <div className={styles.error}>{error}</div>}
+                <form method='post' action={"/api/lost_item"} onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.formGroup}>
-                        <label>Date Lost </label>
+                        <label>Title</label>
                         <input
-                            type="date"
+                            type="text"
                             required
-                            value={formData.dateLost}
-                            onChange={(e) => setFormData({...formData, dateLost: e.target.value})}
+                            value={formData.title || ''}
+                            onChange={(e) => setFormData({...formData, title: e.target.value})}
                         />
                     </div>
-
                     <div className={styles.formGroup}>
-                        <label>Approximate Time</label>
-                        <input
-                            type="time"
-                            value={formData.timeLost}
-                            onChange={(e) => setFormData({...formData, timeLost: e.target.value})}
+                        <label>Description</label>
+                        <textarea
+                            required
+                            value={formData.description || ''}
+                            onChange={(e) => setFormData({...formData, description: e.target.value})}
                         />
                     </div>
-                </div>
-
-                <div className={styles.formGroup}>
-                    <label>Item Name </label>
-                    <input
-                        type="text"
-                        required
-                        placeholder="e.g. Wallet, Phone"
-                        value={formData.itemName}
-                        onChange={(e) => setFormData({...formData, itemName: e.target.value})}
-                    />
-                </div>
-
-                <div className={styles.formGroup}>
-                    <label>Item Description </label>
-                    <textarea
-                        required
-                        placeholder="Color, brand, identifying marks, etc."
-                        value={formData.itemDescription}
-                        onChange={(e) => setFormData({...formData, itemDescription: e.target.value})}
-                    />
-                </div>
-
-                <div className={styles.formGroup}>
-                    <label>Location Last Seen </label>
-                    <input
-                        type="text"
-                        required
-                        value={formData.location}
-                        onChange={(e) => setFormData({...formData, location: e.target.value})}
-                    />
-                </div>
-
-                {/* <div className={styles.formGroup}>
-                    <label>Identification on Item</label>
-                    <input
-                        type="text"
-                        placeholder="Any stickers, tags, or initials"
-                        value={formData.identification}
-                        onChange={(e) => setFormData({...formData, identification: e.target.value})}
-                    />
-                </div> */}
-
-                <div className={styles.formGroup}>
-                    <label>Photo of Item</label>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => setPhoto(e.target.files[0])}
-                        className={styles.fileInput}
-                    />
-                </div>
-
-                {/* <div className={styles.formGroup}>
-                    <label>Additional Notes</label>
-                    <textarea
-                        placeholder="Any other relevant information"
-                        value={formData.additionalNotes}
-                        onChange={(e) => setFormData({...formData, additionalNotes: e.target.value})}
-                    />
-                </div> */}
-
-                <button type="submit" className={styles.submitButton}>
-                    Submit Report
-                </button>
-            </form>
-        </div>
+                    <div className={styles.formGroup}>
+                        <label>Category</label>
+                        <input
+                            type="text"
+                            required
+                            value={formData.category || ''}
+                            onChange={(e) => setFormData({...formData, category: e.target.value})}
+                        />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label>Location</label>
+                        <input
+                            type="text"
+                            required
+                            value={formData.location || ''}
+                            onChange={(e) => setFormData({...formData, location: e.target.value})}
+                        />
+                    </div>
+                    <div className={styles.formRow}>
+                        <div className={styles.formGroup}>
+                            <label>Date Lost</label>
+                            <input
+                                type="datetime-local"
+                                required
+                                value={formData.date || ''}
+                                onChange={(e) => setFormData({...formData, date: e.target.value})}
+                            />
+                        </div>
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label>Contact Info</label>
+                        <input
+                            type="text"
+                            required
+                            value={formData.contactInfo || ''}
+                            onChange={(e) => setFormData({...formData, contactInfo: e.target.value})}
+                        />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label>Status</label>
+                        <input
+                            type="text"
+                            required
+                            value={formData.status || ''}
+                            onChange={(e) => setFormData({...formData, status: e.target.value})}
+                        />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label>Your Username</label>
+                        <input
+                            type="text"
+                            required
+                            value={formData.ownerUsername || ''}
+                            onChange={(e) => setFormData({...formData, ownerUsername: e.target.value})}
+                        />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label>Your Email</label>
+                        <input
+                            type="email"
+                            required
+                            value={formData.ownerEmail || ''}
+                            onChange={(e) => setFormData({...formData, ownerEmail: e.target.value})}
+                        />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label>Photo of Item</label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => setPhoto(e.target.files[0])}
+                            className={styles.fileInput}
+                        />
+                    </div>
+                    <button type="submit" className={styles.submitButton}>
+                        Submit Report
+                    </button>
+                </form>
+            </div>
+        </>
     );
 }
