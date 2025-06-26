@@ -1,8 +1,10 @@
 'use client';
 import { useState } from 'react';
 import styles from './listfound.module.css';
+import Sidebar from '../sidebar';
 
 export default function listfound() {
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -31,24 +33,22 @@ export default function listfound() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Create FormData object to handle file upload
             const submitData = new FormData();
             
-            // Append all form fields
+            
             Object.keys(formData).forEach(key => {
                 if (key !== 'itemImage') {
                     submitData.append(key, formData[key]);
                 }
             });
 
-            // Append the image file
             if (imageFile) {
                 submitData.append('itemImage', imageFile);
             }
 
             const response = await fetch('/api/founditem', {
                 method: 'POST',
-                body: submitData, // Remove headers as FormData sets them automatically
+                body: submitData, 
             });
 
             if (response.ok) {
@@ -62,8 +62,10 @@ export default function listfound() {
                     finderName: '',
                     finderEmail: '',
                     finderContact: '',
-                    itemImage: '',
-                    additionalNotes: ''
+                    additionalNotes: '',
+                    claimedByEmail: null,
+                    claimedAt: null,
+                    createdAt: null
                 });
                 setImageFile(null);
                 setImagePreview(null);
@@ -83,135 +85,144 @@ export default function listfound() {
     };
 
     return (
-        <div className={styles.container}>
-            <form onSubmit={handleSubmit} className={styles.form}>
-                <h2>Report Found Item</h2>
-                
-                <div className={styles.inputGroup}>
-                    <input
-                        type="text"
-                        name="title"
-                        value={formData.title}
-                        onChange={handleChange}
-                        placeholder="Item Name"
-                        required
-                    />
-                </div>
+        <>
+            <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+            <button 
+                className={styles.menuButton}
+                onClick={() => setIsSidebarOpen(true)}
+            >
+                ☰
+            </button>
+            <div className={styles.container}>
+                <form onSubmit={handleSubmit} className={styles.form}>
+                    <h2>Report Found Item</h2>
 
-                <div className={styles.inputGroup}>
-                    <textarea
-                        name="description"
-                        value={formData.description}
-                        onChange={handleChange}
-                        placeholder="Detailed Description (color, brand, condition, etc.)"
-                        required
-                    />
-                </div>
-
-                <div className={styles.inputGroup}>
-                    <select
-                        name="category"
-                        value={formData.category}
-                        onChange={handleChange}
-                        required
-                    >
-                        <option value="">Select Category</option>
-                        <option value="electronics">Electronics</option>
-                        <option value="documents">Documents</option>
-                        <option value="accessories">Accessories</option>
-                        <option value="clothing">Clothing</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-
-                <div className={styles.inputGroup}>
-                    <input
-                        type="text"
-                        name="location"
-                        value={formData.location}
-                        onChange={handleChange}
-                        placeholder="Where did you find it?"
-                        required
-                    />
-                </div>
-
-                <div className={styles.inputGroup}>
-                    <input
-                        type="datetime-local"
-                        name="foundDate"
-                        value={formData.foundDate}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-
-                <div className={styles.inputGroup}>
-                    <input
-                        type="text"
-                        name="finderName"
-                        value={formData.finderName}
-                        onChange={handleChange}
-                        placeholder="Your Name"
-                        required
-                    />
-                </div>
-
-                <div className={styles.inputGroup}>
-                    <input
-                        type="email"
-                        name="finderEmail"
-                        value={formData.finderEmail}
-                        onChange={handleChange}
-                        placeholder="Your Email"
-                        required
-                    />
-                </div>
-
-                <div className={styles.inputGroup}>
-                    <input
-                        type="tel"
-                        name="finderContact"
-                        value={formData.finderContact}
-                        onChange={handleChange}
-                        placeholder="Contact Number"
-                        required
-                    />
-                </div>
-
-                <div className={styles.inputGroup}>
-                    <label className={styles.imageUpload}>
+                    <div className={styles.inputGroup}>
                         <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleImageChange}
-                            className={styles.fileInput}
+                            type="text"
+                            name="title"
+                            value={formData.title}
+                            onChange={handleChange}
+                            placeholder="Item Title"
+                            required
                         />
-                        <span>Choose Image</span>
-                    </label>
-                    {imagePreview && (
-                        <div className={styles.imagePreview}>
-                            <img 
-                                src={imagePreview} 
-                                alt="Preview" 
-                                className={styles.previewImage}
+                    </div>
+
+                    <div className={styles.inputGroup}>
+                        <textarea
+                            name="description"
+                            value={formData.description}
+                            onChange={handleChange}
+                            placeholder="Description"
+                            required
+                        />
+                    </div>
+
+                    <div className={styles.inputGroup}>
+                        <select
+                            name="category"
+                            value={formData.category}
+                            onChange={handleChange}
+                            required
+                        >
+                            <option value="">Select Category</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="documents">Documents</option>
+                            <option value="accessories">Accessories</option>
+                            <option value="clothing">Clothing</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div className={styles.inputGroup}>
+                        <input
+                            type="text"
+                            name="location"
+                            value={formData.location}
+                            onChange={handleChange}
+                            placeholder="Location Found"
+                            required
+                        />
+                    </div>
+
+                    <div className={styles.inputGroup}>
+                        <input
+                            type="datetime-local"
+                            name="foundDate"
+                            value={formData.foundDate}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+
+                    <div className={styles.inputGroup}>
+                        <input
+                            type="text"
+                            name="finderName"
+                            value={formData.finderName}
+                            onChange={handleChange}
+                            placeholder="Finder Name"
+                            required
+                        />
+                    </div>
+
+                    <div className={styles.inputGroup}>
+                        <input
+                            type="email"
+                            name="finderEmail"
+                            value={formData.finderEmail}
+                            onChange={handleChange}
+                            placeholder="Finder Email"
+                            required
+                        />
+                    </div>
+
+                    <div className={styles.inputGroup}>
+                        <input
+                            type="text"
+                            name="finderContact"
+                            value={formData.finderContact}
+                            onChange={handleChange}
+                            placeholder="Finder Contact"
+                            required
+                        />
+                    </div>
+
+                    <div className={styles.inputGroup}>
+                        <textarea
+                            name="additionalNotes"
+                            value={formData.additionalNotes}
+                            onChange={handleChange}
+                            placeholder="Additional Notes"
+                        />
+                    </div>
+
+                    <div className={styles.inputGroup}>
+                        <label className={styles.imageUpload}>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleImageChange}
+                                className={styles.fileInput}
                             />
-                        </div>
-                    )}
-                </div>
+                            <span>Choose Image</span>
+                        </label>
+                        {imagePreview && (
+                            <div className={styles.imagePreview}>
+                                <img 
+                                    src={imagePreview} 
+                                    alt="Preview" 
+                                    className={styles.previewImage}
+                                />
+                            </div>
+                        )}
+                    </div>
 
-                <div className={styles.inputGroup}>
-                    <textarea
-                        name="additionalNotes"
-                        value={formData.additionalNotes}
-                        onChange={handleChange}
-                        placeholder="Additional Notes (optional)"
-                    />
-                </div>
-
-                <button type="submit" className={styles.submitButton}>
-                    Submit Found Item
-                </button>
-            </form>
-        </div>
+                    <button type="submit" className={styles.submitButton}>
+                        Submit Found Item
+                    </button>
+                </form>
+            </div>
+        </>
     );
 }

@@ -7,7 +7,7 @@ export default function Sidebar({ isOpen, onClose }) {
         <div className={`${styles.sidebar} ${isOpen ? styles.open : ''}`}>
             <button className={styles.closeButton} onClick={onClose}>×</button>
             <nav className={styles.sidebarNav}>
-                <Link href="/" className={styles.sidebarLink}>
+                <Link href="/home" className={styles.sidebarLink}>
                 Home
                 </Link>
                 <Link href="/profile" className={styles.sidebarLink}>
