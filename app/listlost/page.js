@@ -18,8 +18,8 @@ export default function LostForm() {
         itemName: '',
         itemDescription: '',
         location: '',
-        // identification: '',
-        // additionalNotes: ''
+        identification: '',
+        additionalNotes: ''
     });
     const [photo, setPhoto] = useState(null);
     const [error, setError] = useState('');
