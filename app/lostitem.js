@@ -30,7 +30,7 @@ export default function Lostitem() {
     itemLost: "Water Bottle",
     itemDescription: "Steel bottle with name label",
     location: "Library",
-    photo: "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQig7_BLlwWCIeO-RF8_dwJa6sdGgiplvIh74KDpCLhqGWc4whnCz8QvDI8bHkm0qmXhhf98Ei6CV00S0VGzQfTdpU29If_Vg6woXuguUdx1dnlsvs3IxHT"
+    photo: "https://images.unsplash.com/photo-1618838895724-4c94fd5ce808?auto=format&fit=crop&w=200&q=80"
   },
   {
     id: "3",
@@ -96,7 +96,7 @@ export default function Lostitem() {
             </div>
 
             <div className={styles.cardBtn}>
-              <button>click me</button>
+              <button>Collect</button>
             </div>
             
             
