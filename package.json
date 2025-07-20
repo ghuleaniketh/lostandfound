@@ -11,8 +11,10 @@
   "dependencies": {
     "caniuse-lite": "^1.0.30001723",
     "js-cookie": "^3.0.5",
+    "multer": "^2.0.2",
     "mysql2": "^3.14.1",
     "next": "^15.3.3",
+    "next-connect": "^1.0.0",
     "pg": "^8.16.0",
     "prisma": "^6.9.0",
     "react": "^19.1.0",

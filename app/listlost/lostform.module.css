@@ -99,3 +99,13 @@
     margin-bottom: 20px;
     text-align: center;
 }
+
+.success {
+  background: #d4edda;
+  color: #155724;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  border: 1px solid #c3e6cb;
+  text-align: center;
+}

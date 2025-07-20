@@ -27,7 +27,7 @@ export default function Login() {
             const data = await res.json();
         
             if (res.ok) {
-    if (data.pass === formData.password) {
+    if (data.password === formData.password) {
 
 
         Cookies.set('token', data.id, {
@@ -36,10 +36,8 @@ export default function Login() {
         sameSite: 'strict',
         });
 
-//         import Cookies from 'js-cookie';
-
-// const token = Cookies.get('token');
-// console.log("User token from cookie:", token);
+const token = Cookies.get('token');
+console.log("User token from cookie:", token);
 
 
         alert("Login ho gai bhai.............");

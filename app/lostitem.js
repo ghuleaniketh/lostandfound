@@ -7,74 +7,27 @@ export default function Lostitem() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  
 
-  let saman = [
-    {
-      id:"1",
-      fullName : "aniket",
-      contact:"1234567890",
-      dateLost:"09/25/2025",
-      timeLost:"01:22",
-      itemLost:"ID Card",
-      itemDescription:"srm ka id hai",
-      location:"Near V - Block",
-      photo:"https://media.licdn.com/dms/image/v2/C510BAQGikFtlBr3v3A/company-logo_200_200/company-logo_200_200/0/1631390746545?e=2147483647&v=beta&t=ztcbxIymeoiGRp5DC8cJqhHkwSV-9JDM6ecIJlutddM"
-    },
-    {
-    id: "2",
-    fullName: "Vaishnav Rao",
-    contact: "9876543210",
-    dateLost: "09/20/2025",
-    timeLost: "14:45",
-    itemLost: "Water Bottle",
-    itemDescription: "Steel bottle with name label",
-    location: "Library",
-    photo: "https://images.unsplash.com/photo-1618838895724-4c94fd5ce808?auto=format&fit=crop&w=200&q=80"
-  },
-  {
-    id: "3",
-    fullName: "Riya Reddy",
-    contact: "7891234560",
-    dateLost: "09/21/2025",
-    timeLost: "11:10",
-    itemLost: "Power Bank",
-    itemDescription: "Mi power bank, black color, 10000mAh",
-    location: "Near Hostel Gate",
-    photo: "https://images.unsplash.com/photo-1618838895724-4c94fd5ce808?auto=format&fit=crop&w=200&q=80"
-  },
-  {
-    id: "4",
-    fullName: "Rohan Mehta",
-    contact: "9123456789",
-    dateLost: "09/22/2025",
-    timeLost: "16:20",
-    itemLost: "Bluetooth Speaker",
-    itemDescription: "JBL portable speaker, red color",
-    location: "Cafeteria",
-    photo: "https://images.unsplash.com/photo-1585386959984-a4155227c9ea?auto=format&fit=crop&w=200&q=80"
-  },
-  {
-    id: "5",
-    fullName: "Isha Kulkarni",
-    contact: "9988776655",
-    dateLost: "09/24/2025",
-    timeLost: "19:00",
-    itemLost: "Spectacles",
-    itemDescription: "Ray-Ban glasses in black case",
-    location: "Main Auditorium",
-    photo: "https://images.unsplash.com/photo-1581609958476-96b7c93af5d8?auto=format&fit=crop&w=200&q=80"
-  }
-  ]
-
-  useEffect(() => {
-    setTimeout(() => {
-      setUsers(saman);
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('/api/getlostitemdata');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const items = await response.json();
+      console.log(items);
+      setUsers(items);
+    } catch (err) {
+      setError(err.message);
+    } finally {
       setLoading(false);
-    }, 500);
-  }, []);
+    }
+  };
+  fetchData();
+}, []);
 
-  if (loading) return <div>Ruk Bhai .....</div>;
+  if (loading) return <div>loading.................</div>;
   if (error) return <div>Kuch tho gadbad hai daya ....... {error}</div>;
 
   return (
@@ -83,9 +36,9 @@ export default function Lostitem() {
         <div key={item.id} className={styles.card}>
           <div className={styles.cardContent}>
             <div>
-              <h1>{item.fullName}</h1>
+              <h1>{item.owner_username}</h1>
               <div className={styles.dateandtime}>
-                <p><strong>Date Lost:</strong> {item.dateLost}</p>
+                <p><strong>Date Lost:</strong> {item.date_lost}</p>
                 <p><strong>Time Lost:</strong> {item.timeLost}</p>
                 </div>
             </div>
@@ -104,7 +57,7 @@ export default function Lostitem() {
           <div className={styles.imgbox}>
             <div>
               <img
-              src={item.photo}
+              src={item.img}
               alt={item.itemLost}
               className={styles.itemImage}
               />

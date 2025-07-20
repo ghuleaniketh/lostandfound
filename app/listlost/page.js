@@ -1,28 +1,28 @@
 'use client';
 import { useState } from 'react';
-import styles from './lostform.module.css';
 import { v4 as uuidv4 } from 'uuid';
-import Sidebar from  '../sidebar';
-
-
+import styles from './lostform.module.css';
+import Sidebar from '../sidebar';
 
 export default function LostForm() {
-    
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [formData, setFormData] = useState({
-        id:uuidv4(),
-        fullName: '',
-        contact: '',
-        dateLost: '',
-        timeLost: '',
-        itemName: '',
-        itemDescription: '',
-        location: '',
-        identification: '',
-        additionalNotes: ''
-    });
-    const [photo, setPhoto] = useState(null);
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
+    const [formData, setFormData] = useState({
+    id: uuidv4(),
+    title: '',
+    description: '',
+    category: '',
+    location: '',
+    date: '',
+    contactInfo: '',
+    status: 'not found',
+    ownerUsername: '',
+    ownerEmail: '',
+  });
+
+  const [imageFile, setImageFile] = useState(null);
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -31,35 +31,33 @@ export default function LostForm() {
             Object.keys(formData).forEach(key => {
                 formDataToSend.append(key, formData[key]);
             });
-            if (photo) {
-                formDataToSend.append('photo', photo);
-            }
 
-            const res = await fetch('/api/lost_item', {
+            const uploadData = new FormData();
+
+    for (const key in formData) {
+      uploadData.append(key, formData[key]);
+    }
+
+    uploadData.append('image', imageFile); // Must match multer field
+            const res = await fetch('/api/lostitem', {
                 method: 'POST',
-                body: formDataToSend,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(uploadData),
             });
 
             if (!res.ok) {
                 const errorMsg = await res.text();
                 setError(errorMsg || 'Failed to submit the report.');
+                setSuccess('');
                 return;
             }
-            
-            setFormData({
-                fullName: '',
-                contact: '',
-                dateLost: '',
-                timeLost: '',
-                itemName: '',
-                itemDescription: '',
-                location: '',
-                // identification: '',
-                // additionalNotes: ''
-            });
-            setPhoto(null);
+
+            setSuccess('Lost item added successfully!');
+            setError('');
+            // Optionally reset form fields here
         } catch (err) {
-            setError(err.message);
+            setError(err.message || 'Something went wrong.');
+            setSuccess('');
         }
     };
 
@@ -75,22 +73,23 @@ export default function LostForm() {
             <div className={styles.formContainer}>
                 <h1>Lost Item Report</h1>
                 {error && <div className={styles.error}>{error}</div>}
-                <form method='post' action={"/api/lost_item"} onSubmit={handleSubmit} className={styles.form}>
+                {success && <div className={styles.success}>{success}</div>}
+                <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.formGroup}>
                         <label>Title</label>
                         <input
                             type="text"
                             required
-                            value={formData.title || ''}
-                            onChange={(e) => setFormData({...formData, title: e.target.value})}
+                            value={formData.title}
+                            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                         />
                     </div>
                     <div className={styles.formGroup}>
                         <label>Description</label>
                         <textarea
                             required
-                            value={formData.description || ''}
-                            onChange={(e) => setFormData({...formData, description: e.target.value})}
+                            value={formData.description}
+                            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                         />
                     </div>
                     <div className={styles.formGroup}>
@@ -98,8 +97,8 @@ export default function LostForm() {
                         <input
                             type="text"
                             required
-                            value={formData.category || ''}
-                            onChange={(e) => setFormData({...formData, category: e.target.value})}
+                            value={formData.category}
+                            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                         />
                     </div>
                     <div className={styles.formGroup}>
@@ -107,46 +106,36 @@ export default function LostForm() {
                         <input
                             type="text"
                             required
-                            value={formData.location || ''}
-                            onChange={(e) => setFormData({...formData, location: e.target.value})}
+                            value={formData.location}
+                            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                         />
                     </div>
-                    <div className={styles.formRow}>
-                        <div className={styles.formGroup}>
-                            <label>Date Lost</label>
-                            <input
-                                type="datetime-local"
-                                required
-                                value={formData.date || ''}
-                                onChange={(e) => setFormData({...formData, date: e.target.value})}
-                            />
-                        </div>
+                    <div className={styles.formGroup}>
+                        <label>Date & Time Lost</label>
+                        <input
+                            type="datetime-local"
+                            required
+                            value={formData.date}
+                            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                        />
                     </div>
                     <div className={styles.formGroup}>
                         <label>Contact Info</label>
                         <input
                             type="text"
                             required
-                            value={formData.contactInfo || ''}
-                            onChange={(e) => setFormData({...formData, contactInfo: e.target.value})}
+                            value={formData.contactInfo}
+                            onChange={(e) => setFormData({ ...formData, contactInfo: e.target.value })}
                         />
                     </div>
-                    <div className={styles.formGroup}>
-                        <label>Status</label>
-                        <input
-                            type="text"
-                            required
-                            value={formData.status || ''}
-                            onChange={(e) => setFormData({...formData, status: e.target.value})}
-                        />
-                    </div>
+                    
                     <div className={styles.formGroup}>
                         <label>Your Username</label>
                         <input
                             type="text"
                             required
-                            value={formData.ownerUsername || ''}
-                            onChange={(e) => setFormData({...formData, ownerUsername: e.target.value})}
+                            value={formData.ownerUsername}
+                            onChange={(e) => setFormData({ ...formData, ownerUsername: e.target.value })}
                         />
                     </div>
                     <div className={styles.formGroup}>
@@ -154,8 +143,8 @@ export default function LostForm() {
                         <input
                             type="email"
                             required
-                            value={formData.ownerEmail || ''}
-                            onChange={(e) => setFormData({...formData, ownerEmail: e.target.value})}
+                            value={formData.ownerEmail}
+                            onChange={(e) => setFormData({ ...formData, ownerEmail: e.target.value })}
                         />
                     </div>
                     <div className={styles.formGroup}>
@@ -163,7 +152,7 @@ export default function LostForm() {
                         <input
                             type="file"
                             accept="image/*"
-                            onChange={(e) => setPhoto(e.target.files[0])}
+                            onChange={(e) => setFormData({ ...formData, img: e.target.value })}
                             className={styles.fileInput}
                         />
                     </div>
