@@ -8,7 +8,6 @@ export async function POST(req){
     console.log(email);
     const q = 'SELECT * FROM users WHERE email = ?';
     const [userdata] =await db.execute(q,[email]);
-    console.log(userdata);
     return Response.json({ success: true, data: userdata[0]});
     }catch{
         console.log("problem ho gaya bhai");
