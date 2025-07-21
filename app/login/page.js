@@ -25,11 +25,11 @@ export default function Login() {
             });
 
             const data = await res.json();
+
+
         
             if (res.ok) {
-    if (data.password === formData.password) {
-
-
+    if (data.data.password === formData.password) {
         Cookies.set('token', data.id, {
         expires: 1, // 1 day
         secure: true,
