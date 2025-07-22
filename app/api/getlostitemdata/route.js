@@ -1,5 +1,6 @@
 import db from '@/lib/db';
 
+
 export async function GET(req) {
   try {
     const [rows] = await db.query('SELECT * FROM lost_items');
