@@ -9,40 +9,37 @@ export default function LostForm() {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [formData, setFormData] = useState({
-    id: uuidv4(),
-    title: '',
-    description: '',
-    category: '',
-    location: '',
-    date: '',
-    contactInfo: '',
-    status: 'not found',
-    ownerUsername: '',
-    ownerEmail: '',
-  });
-
-  const [imageFile, setImageFile] = useState(null);
-
+        id: uuidv4(),
+        title: '',
+        description: '',
+        category: '',
+        location: '',
+        date: '',
+        contactInfo: '',
+        status: 'not found',
+        ownerUsername: '',
+        ownerEmail: '',
+    });
+    const [imageFile, setImageFile] = useState(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const formDataToSend = new FormData();
-            Object.keys(formData).forEach(key => {
-                formDataToSend.append(key, formData[key]);
-            });
-
             const uploadData = new FormData();
 
-    for (const key in formData) {
-      uploadData.append(key, formData[key]);
-    }
+            // Append all text fields
+            Object.entries(formData).forEach(([key, value]) => {
+                uploadData.append(key, value);
+            });
 
-    uploadData.append('image', imageFile); // Must match multer field
+            // Append the file
+            if (imageFile) {
+                uploadData.append('image', imageFile); // 'image' must match backend field name
+            }
+
             const res = await fetch('/api/lostitem', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(uploadData),
+                body: uploadData, // No need to set headers
             });
 
             if (!res.ok) {
@@ -54,7 +51,21 @@ export default function LostForm() {
 
             setSuccess('Lost item added successfully!');
             setError('');
-            // Optionally reset form fields here
+
+            // Reset form
+            setFormData({
+                id: uuidv4(),
+                title: '',
+                description: '',
+                category: '',
+                location: '',
+                date: '',
+                contactInfo: '',
+                status: 'not found',
+                ownerUsername: '',
+                ownerEmail: '',
+            });
+            setImageFile(null);
         } catch (err) {
             setError(err.message || 'Something went wrong.');
             setSuccess('');
@@ -70,92 +81,52 @@ export default function LostForm() {
             >
                 ☰
             </button>
+
             <div className={styles.formContainer}>
                 <h1>Lost Item Report</h1>
                 {error && <div className={styles.error}>{error}</div>}
                 {success && <div className={styles.success}>{success}</div>}
-                <form onSubmit={handleSubmit} className={styles.form}>
-                    <div className={styles.formGroup}>
-                        <label>Title</label>
-                        <input
-                            type="text"
-                            required
-                            value={formData.title}
-                            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                        />
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label>Description</label>
-                        <textarea
-                            required
-                            value={formData.description}
-                            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                        />
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label>Category</label>
-                        <input
-                            type="text"
-                            required
-                            value={formData.category}
-                            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                        />
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label>Location</label>
-                        <input
-                            type="text"
-                            required
-                            value={formData.location}
-                            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                        />
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label>Date & Time Lost</label>
-                        <input
-                            type="datetime-local"
-                            required
-                            value={formData.date}
-                            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                        />
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label>Contact Info</label>
-                        <input
-                            type="text"
-                            required
-                            value={formData.contactInfo}
-                            onChange={(e) => setFormData({ ...formData, contactInfo: e.target.value })}
-                        />
-                    </div>
-                    
-                    <div className={styles.formGroup}>
-                        <label>Your Username</label>
-                        <input
-                            type="text"
-                            required
-                            value={formData.ownerUsername}
-                            onChange={(e) => setFormData({ ...formData, ownerUsername: e.target.value })}
-                        />
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label>Your Email</label>
-                        <input
-                            type="email"
-                            required
-                            value={formData.ownerEmail}
-                            onChange={(e) => setFormData({ ...formData, ownerEmail: e.target.value })}
-                        />
-                    </div>
+
+                <form onSubmit={handleSubmit} className={styles.form} encType='multipart/form-data'>
+                    {[
+                        { label: 'Title', key: 'title', type: 'text' },
+                        { label: 'Description', key: 'description', type: 'textarea' },
+                        { label: 'Category', key: 'category', type: 'text' },
+                        { label: 'Location', key: 'location', type: 'text' },
+                        { label: 'Date & Time Lost', key: 'date', type: 'datetime-local' },
+                        { label: 'Contact Info', key: 'contactInfo', type: 'text' },
+                        { label: 'Your Username', key: 'ownerUsername', type: 'text' },
+                        { label: 'Your Email', key: 'ownerEmail', type: 'email' }
+                    ].map(({ label, key, type }) => (
+                        <div className={styles.formGroup} key={key}>
+                            <label>{label}</label>
+                            {type === 'textarea' ? (
+                                <textarea
+                                    required
+                                    value={formData[key]}
+                                    onChange={(e) => setFormData({ ...formData, [key]: e.target.value })}
+                                />
+                            ) : (
+                                <input
+                                    type={type}
+                                    required
+                                    value={formData[key]}
+                                    onChange={(e) => setFormData({ ...formData, [key]: e.target.value })}
+                                />
+                            )}
+                        </div>
+                    ))}
+
                     <div className={styles.formGroup}>
                         <label>Photo of Item</label>
                         <input
                             type="file"
                             accept="image/*"
-                            onChange={(e) => setFormData({ ...formData, img: e.target.value })}
+                            onChange={(e) => setImageFile(e.target.files[0])}
                             className={styles.fileInput}
                         />
                     </div>
+
                     <button type="submit" className={styles.submitButton}>
                         Submit Report
                     </button>
